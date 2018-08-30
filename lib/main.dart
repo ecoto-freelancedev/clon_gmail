@@ -100,6 +100,26 @@ class SearchListState extends State<SearchList> with TickerProviderStateMixin {
   Animation<Offset> _drawerDetailsPosition;
   bool _showDrawerContents = true; 
   var favoriteList = Map();
+  
+  @override
+  void initState() {
+    super.initState();
+    _controller = new AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
+    _drawerContentsOpacity = new CurvedAnimation(
+      parent: new ReverseAnimation(_controller),
+      curve: Curves.fastOutSlowIn,
+    );
+    _drawerDetailsPosition = new Tween<Offset>(
+      begin: const Offset(0.0, -1.0),
+      end: Offset.zero,
+    ).animate(new CurvedAnimation(
+      parent: _controller,
+      curve: Curves.fastOutSlowIn,
+    ));
+  }
 
   @override
   void dispose() {
